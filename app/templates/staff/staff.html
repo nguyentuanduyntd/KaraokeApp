@@ -1,0 +1,48 @@
+{% extends 'layout/base.html' %}
+{% block title %}Trang nhân viên{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center fw-bold mb-4">QUẢN LÝ DÀNH CHO NHÂN VIÊN</h2>
+
+    <div class="row g-4">
+
+        <!-- ĐẶT PHÒNG -->
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center">
+                    <i class="fas fa-calendar-plus fa-3x text-primary mb-3"></i>
+                    <h4>Đặt phòng</h4>
+                    <p>Nhân viên có thể đặt phòng cho khách vãng lai hoặc khách có tài khoản.</p>
+                    <a class="btn btn-primary mt-2" href="{{url_for('staff_booking') }}">Đi đến</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- DỊCH VỤ -->
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center">
+                    <i class="fas fa-utensils fa-3x text-success mb-3"></i>
+                    <h4>Dịch vụ ăn uống</h4>
+                    <p>Thêm, sửa, xoá các dịch vụ ăn uống để sử dụng khi thanh toán.</p>
+                    <a class="btn btn-success mt-2" href="{{url_for('staff_services') }}">Quản lý</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- THANH TOÁN -->
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center">
+                    <i class="fas fa-receipt fa-3x text-danger mb-3"></i>
+                    <h4>Thanh toán</h4>
+                    <p>Thanh toán phòng và dịch vụ cho khách đã sử dụng.</p>
+                    <a class="btn btn-danger mt-2" href="{{url_for('staff_payment') }}">Thanh toán</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+.hero-title {
+        font-weight: 800;
+        color: #6f42c1; /* Màu tím chủ đạo */
+        line-height: 1.2;
+    }
+.hero-text {
+    color: #555;
+    font-size: 1.1rem;
+}
+.btn-custom {
+    background: linear-gradient(90deg, #d53369 0%, #daae51 100%); /* Gradient mẫu */
+    background: linear-gradient(to right, #8e2de2, #4a00e0); /* Gradient tím đẹp hơn */
+    border: none;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: transform 0.3s;
+}
+.btn-custom:hover {
+    transform: scale(1.05);
+    color: white;
+}
+.carousel-item img {
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    object-fit: cover;
+    height: 400px;
+}
+.feature-icon {
+    color: #d63384;
+    margin-right: 10px;
+}
+.room-badge-custom {
+    /* Thêm bo góc tròn hơn */
+    border-radius: 10px;
+    /* Thay đổi font chữ */
+    font-weight: bold;
+    /* Thêm một chút padding nếu cần */
+    padding: 0.4em 0.8em;
+    /* Hiệu ứng bóng đổ nhẹ cho nổi bật */
+    box-shadow: 0 2px 5px rgba(220, 53, 69, 0.5); /* Màu đỏ */
+    /* Dùng màu đậm hơn một chút so với màu mặc định */
+    background-color: #c93030 !important;
+    text-transform: uppercase;
+}

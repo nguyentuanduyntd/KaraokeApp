@@ -1,0 +1,48 @@
+{% extends "layout/base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    <h3> Quản lý dịch vụ</h3>
+
+    <div class="row mt-4">
+
+        <!-- DANH SÁCH PHÒNG -->
+        <div class="col-md-4">
+            <h5> Phòng đang hoạt động</h5>
+            <ul class="list-group">
+                {% for r in receipts %}
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <b>{{ r.coupon.room.name }}</b><br>
+                            <small class="text-muted">
+                                Khách: {{ r.coupon.user.name }}
+                                Time: {{ r.coupon.check_in_time.strftime('%H:%M') }}
+                                - {{ r.coupon.check_out_time.strftime('%H:%M') }}
+                            </small>
+                        </div>
+
+                        <a class="btn btn-sm btn-primary"
+                           href="{{ url_for('staff_services_detail', receipt_id=r.id) }}">
+                            Chọn
+                        </a>
+                    </div>
+                </li>
+
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- CHI TIẾT DỊCH VỤ -->
+        <div class="col-md-8">
+            {% if receipt %}
+            {% include "staff/service_detail.html" %}
+            {% else %}
+            <p class="text-muted"> Chọn phòng để gọi dịch vụ</p>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

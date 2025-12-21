@@ -1,0 +1,164 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Đặt phòng cho khách vãng lai{% endblock %}
+
+{% block content %}
+<link href="{{ url_for('static', filename='css/booking.css') }}" rel="stylesheet">
+
+<div class="container py-5">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, msg in messages %}
+            <div class="alert alert-{{ category }}">{{ msg }}</div>
+        {% endfor %}
+    {% endwith %}
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h2 class="text-center mb-4 fw-bold">
+                <i class="fas fa-user-tie me-2"></i>ĐẶT PHÒNG (NHÂN VIÊN)
+            </h2>
+
+            <ul class="step-indicator">
+                <li class="active" id="indicator-1">
+                    <span>1</span><br>
+                    <span class="step-label">THÔNG TIN ĐẶT PHÒNG</span>
+                </li>
+                <li id="indicator-2">
+                    <span>2</span><br>
+                    <span class="step-label">THÔNG TIN KHÁCH</span>
+                </li>
+                <li id="indicator-3">
+                    <span>3</span><br>
+                    <span class="step-label">HOÀN TẤT</span>
+                </li>
+            </ul>
+
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-body p-5">
+
+                    <form action="{{ url_for('staff_booking') }}" id="bookingForm" method="post">
+
+                        <!-- === BƯỚC 1 === -->
+                        <div class="step-content active" id="step-1">
+                            <h4 class="mb-3 text-primary">Chọn thông tin phòng</h4>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Chọn phòng:</label>
+                                <select class="form-select form-select-lg" id="room_select" name="room_id"
+                                        onchange="calculatePrice()">
+                                    {% for r in rooms %}
+                                    <option data-name="{{ r.name }}"
+                                            data-price="{{ r.type.price }}"
+                                            value="{{ r.id }}">
+                                        {{ r.name }} ({{ r.type.name }} - {{ "{:,.0f}".format(r.type.price) }}đ/h)
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Ngày đặt:</label>
+                                    <input class="form-control" id="booking_date" name="booking_date"
+                                           onchange="calculatePrice()" required type="date">
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label fw-bold">Giờ bắt đầu:</label>
+                                    <input class="form-control" id="start_time" name="start_time"
+                                           onchange="calculatePrice()" required type="time">
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label fw-bold">Giờ kết thúc:</label>
+                                    <input class="form-control" id="end_time" name="end_time"
+                                           onchange="calculatePrice()" required type="time">
+                                </div>
+                            </div>
+
+                            <div class="total-price-box mt-3 text-center d-none" id="price-display">
+                                <h5>Số tiền tạm tính:</h5>
+                                <h2 class="text-danger fw-bold" id="total_amount_display">0 VNĐ</h2>
+                                <small class="text-muted">Thời lượng: <span id="duration_display">0</span> giờ</small>
+                            </div>
+
+                            <div class="text-end mt-4">
+                                <button class="btn btn-primary btn-lg px-5" onclick="goToStep2()" type="button">
+                                    Tiếp tục <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- === BƯỚC 2 (cho staff nhập thông tin khách) === -->
+                        <div class="step-content" id="step-2">
+                            <h4 class="mb-3 text-primary">Thông tin khách vãng lai</h4>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Họ và tên khách:</label>
+                                    <input class="form-control" id="guest_name" name="guest_name"
+                                           placeholder="Nhập họ tên khách..." required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Số điện thoại:</label>
+                                    <input class="form-control" id="guest_phone" name="guest_phone"
+                                           placeholder="Nhập SĐT khách..." required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Ghi chú thêm:</label>
+                                <textarea class="form-control" name="note" placeholder="Ví dụ: sinh nhật, họp nhóm..."
+                                          rows="3"></textarea>
+                            </div>
+
+                            <div class="d-flex justify-content-between mt-4">
+                                <button class="btn btn-secondary" onclick="goToStep(1)" type="button">
+                                    <i class="fas fa-arrow-left me-2"></i>Quay lại
+                                </button>
+                                <button class="btn btn-primary btn-lg px-5" onclick="goToStep(3)" type="button">
+                                    Tiếp tục <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- === BƯỚC 3 === -->
+                        <div class="step-content" id="step-3">
+                            <h4 class="mb-3 text-primary text-center">Xác nhận thông tin</h4>
+
+                            <div class="alert alert-info">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>Khách:</strong> <span id="confirm_guest_name">...</span></p>
+                                        <p><strong>SĐT:</strong> <span id="confirm_guest_phone">...</span></p>
+                                    </div>
+                                    <div class="col-md-6 text-md-end">
+                                        <p><strong>Phòng:</strong> <span id="confirm_room_name">...</span></p>
+                                        <p><strong>Thời gian:</strong> <span id="confirm_time">...</span></p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="text-center">
+                                    <h3>Tổng tiền: <span class="text-danger fw-bold" id="confirm_total">...</span></h3>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between mt-4">
+                                <button class="btn btn-secondary" onclick="goToStep(2)" type="button">
+                                    <i class="fas fa-arrow-left me-2"></i>Quay lại
+                                </button>
+                                <button class="btn btn-success btn-lg px-5" type="submit">
+                                    <i class="fas fa-check-circle me-2"></i>HOÀN TẤT
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                    {% if msg %}
+                    <div class="alert alert-info mt-3">{{ msg }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/staff_booking.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,103 @@
+{%extends 'layout/base.html'%}
+
+{%block content%}
+<link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet">
+<div class="container py-5">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show mt-3" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <div class="row align-items-center">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+            <span class="text-uppercase text-muted fw-bold">Music Box</span>
+            <h1 class="display-4 hero-title mb-4">
+                GIẢI PHÓNG ÂU LO <br>
+                TỰ DO THỂ HIỆN
+            </h1>
+            <ul class="list-unstyled hero-text mb-4">
+                <li class="mb-3 d-flex">
+                    <i class="fas fa-music feature-icon mt-1"></i>
+                    <span>Chuỗi phòng thu âm, giải trí hàng đầu tại Việt Nam theo phong cách Hàn Quốc.</span>
+                </li>
+                <li class="mb-3 d-flex">
+                    <i class="fas fa-music feature-icon mt-1"></i>
+                    <span>Mang lại niềm vui, dành cho mọi lứa tuổi chung đam mê ca hát và âm nhạc.</span>
+                </li>
+            </ul>
+            <a class="btn btn-custom shadow-lg" href="/booking">
+                Đặt phòng ngay <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+        <div class="col-lg-6">
+            <div class="carousel slide" data-bs-ride="carousel" id="heroCarousel">
+                <div class="carousel-indicators">
+                    <button class="active" data-bs-slide-to="0" data-bs-target="#heroCarousel" type="button"></button>
+                    <button data-bs-slide-to="1" data-bs-target="#heroCarousel" type="button"></button>
+                    <button data-bs-slide-to="2" data-bs-target="#heroCarousel" type="button"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="2000">
+                        <img alt="Image1" class="d-block w-100"
+                             src="{{ url_for('static', filename='images/img1.jpg') }}">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="2000">
+                        <img alt="Image2" class="d-block w-100"
+                             src="{{ url_for('static', filename='images/img2.jpg') }}">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="2000">
+                        <img alt="Image3" class="d-block w-100"
+                             src="{{ url_for('static', filename='images/img3.jpg') }}">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" data-bs-slide="prev" data-bs-target="#heroCarousel" type="button">
+                    <span aria-hidden="true" class="carousel-control-prev-icon"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" data-bs-slide="next" data-bs-target="#heroCarousel" type="button">
+                    <span aria-hidden="true" class="carousel-control-next-icon"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5" id="room-list">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-uppercase" style="color: #6f42c1;">Chọn Phòng Phù Hợp</h2>
+        <p class="text-muted">Trải nghiệm không gian âm nhạc đẳng cấp với nhiều lựa chọn đa dạng</p>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        {% for room in rooms %}
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm hover-card">
+                <img alt="{{ room.name }}" class="card-img-top" src="{{ room.image }}" width="300">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title fw-bold text-dark mb-0">{{ room.name }}</h5>
+                         <span class="badge {{ badge_class }} room-badge-custom">{{ room.type.name }}</span>
+                    </div>
+                    <p class="text-muted small mb-3">
+                        <i class="fas fa-users me-1"></i>Sức chứa: {{ room.capacity }}
+                    </p>
+                    <div class="bg-light p-2 rounded mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="small text-muted"><i class="far fa-clock"></i> 08:00 - 23:00</span>
+                            <span class="fw-bold text-primary">{{ room.type.price }}</span>
+                        </div>
+                    </div>
+                    <a class="btn btn-outline-primary w-100 rounded-pill" href="/booking">Đặt phòng</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{%endblock%}

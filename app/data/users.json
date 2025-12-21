@@ -1,0 +1,36 @@
+[
+  {
+    "name": "Administrator",
+    "username": "admin",
+    "password": "123456",
+    "phone": "0900000001",
+    "role": "ADMIN"
+  },
+  {
+    "name": "Staff 01",
+    "username": "staff",
+    "password": "123456",
+    "phone": "0900000002",
+    "role": "STAFF"
+  },
+  {
+    "name": "Nguyễn Văn A",
+    "username": "VanA",
+    "password": "123456789",
+    "phone": "034563434",
+    "role": "GUEST"
+  },
+  {
+    "name": "Nguyễn Văn B",
+    "username": "VanB",
+    "password": "123456789",
+    "phone": "034563435",
+    "role": "GUEST"
+  },{
+    "name": "Nguyễn Văn C",
+    "username": "VanC",
+    "password": "123456789",
+    "phone": "034563437",
+    "role": "GUEST"
+  }
+]

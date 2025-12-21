@@ -1,0 +1,56 @@
+body {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+.momo-box {
+    max-width: 420px;
+    margin: 80px auto;
+    padding: 30px;
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+.momo-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #d63384;
+    margin-bottom: 15px;
+}
+
+.momo-total {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.momo-total span {
+    font-size: 24px;
+    font-weight: bold;
+    color: #dc3545;
+}
+
+.momo-qr {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 14px;
+    margin-bottom: 25px;
+}
+
+.momo-qr img {
+    width: 220px;
+    max-width: 100%;
+}
+
+.btn-momo {
+    font-size: 18px;
+    padding: 12px;
+    border-radius: 12px;
+}
+
+.momo-note {
+    font-size: 14px;
+    color: #6c757d;
+    margin-top: 15px;
+}

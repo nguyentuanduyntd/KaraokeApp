@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Khô gà lá chanh",
+    "unit": "Phần",
+    "price": 50000,
+    "inventory_quantity": 100,
+    "status_service": true
+  },
+  {
+    "name": "Combo trái cây",
+    "unit": "Dĩa",
+    "price": 70000,
+    "inventory_quantity": 50,
+    "status_service": true
+  },
+  {
+    "name": "Snack tổng hợp",
+    "unit": "Gói",
+    "price": 30000,
+    "inventory_quantity": 200,
+    "status_service": true
+  },
+  {
+    "name": "Coca Cola",
+    "unit": "Chai",
+    "price": 20000,
+    "inventory_quantity": 300,
+    "status_service": true
+  },
+  {
+    "name": "Nước suối",
+    "unit": "Chai",
+    "price": 15000,
+    "inventory_quantity": 500,
+    "status_service": true
+  },
+  {
+    "name": "Bia Heineken",
+    "unit": "Lon",
+    "price": 30000,
+    "inventory_quantity": 250,
+    "status_service": true
+  }
+]

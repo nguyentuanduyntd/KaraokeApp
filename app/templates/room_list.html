@@ -1,0 +1,32 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center text-primary mb-4">Danh Sách Phòng Hát</h2>
+    <div class="alert alert-info text-center">
+        Chọn một phòng để xem lịch các khung giờ đã kín.
+    </div>
+
+    <div class="row">
+        {% for room in rooms %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img alt="{{ room.name }}" class="card-img-top" src="{{ room.image }}"
+                     style="height: 200px; object-fit: cover;">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-success">{{ room.name }}</h5>
+                    <p class="card-text">
+                        Sức chứa: {{ room.capacity }} người<br>
+                        Giá: {{ "{:,.0f}".format(room.type.price) }} đ/h
+                    </p>
+                    <a class="btn btn-outline-primary w-100"
+                       href="{{ url_for('room_detail_schedule', room_id=room.id) }}">
+                        Xem lịch phòng này
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

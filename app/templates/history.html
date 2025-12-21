@@ -1,0 +1,64 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center text-primary mb-4">Lịch Sử Đặt Phòng</h2>
+
+    {% if bookings %}
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th>Mã Phiếu</th>
+            <th>Phòng</th>
+            <th>Ngày tạo phiếu</th>
+            <th>Ngày đặt phòng hát</th>
+            <th>Bắt đầu</th>
+            <th>Kết thúc</th>
+            <th>Trạng thái</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for b in bookings %}
+        <tr>
+            <td>{{ b.id }}</td>
+            <td>{{ b.room.name }}</td>
+            <td>{{ b.created_time.strftime('%d/%m/%Y %H:%M') }}</td>
+            <td>{{ b.booking_date.strftime('%d/%m/%Y') }}</td>
+            <td>{{ b.check_in_time.strftime('%H:%M') }}</td>
+            <td>{{ b.check_out_time.strftime('%H:%M') }}</td>
+
+            <td>
+                {% if b.status.name == 'BOOKED' %}
+                <span class="badge bg-warning">Đã đặt</span>
+                {% elif b.status.name == 'USING' %}
+                <span class="badge bg-primary">Đang sử dụng</span>
+                {% elif b.status.name == 'PAID' %}
+                <span class="badge bg-success">Đã thanh toán</span>
+                {% elif b.status.name == 'CANCELLED' %}
+                <span class="badge bg-danger">Đã hủy</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if b.status.name == 'BOOKED' %}
+                <form action="{{ url_for('cancel_booking', booking_id=b.id) }}"
+                      method="post"
+                      onsubmit="return confirm('Bạn có chắc muốn hủy đặt phòng này?');">
+                    <button class="btn btn-sm btn-danger">
+                        Hủy
+                    </button>
+                </form>
+                {% else %}
+                <span class="text-muted">—</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+    <div class="alert alert-warning text-center">Bạn chưa có lịch sử đặt phòng!</div>
+    {% endif %}
+</div>
+{% endblock %}

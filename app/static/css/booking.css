@@ -1,0 +1,174 @@
+/* =========================
+   STEP WRAPPER
+========================= */
+.step-indicator {
+    display: flex;
+    background: #f6f6f6;
+    border-radius: 14px;
+    padding: 18px 24px;
+    margin-bottom: 30px;
+    list-style: none;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Ẩn đường kẻ cũ */
+.step-indicator::before {
+    display: none;
+}
+
+.step-indicator li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    color: #999;
+    font-weight: 600;
+}
+
+/* Vòng tròn số */
+.step-indicator li span:first-child {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* Step đang active */
+.step-indicator li.active {
+    color: #0d6efd;
+}
+
+.step-indicator li.active span:first-child {
+    background: #0d6efd;
+    color: #fff;
+}
+
+/* Text step */
+.step-label {
+    font-size: 14px;
+    letter-spacing: 0.3px;
+}
+
+/* =========================
+   FORM KHUNG LỚN
+========================= */
+.card {
+    border-radius: 18px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.card-body {
+    padding: 40px !important;
+}
+
+/* =========================
+   STEP CONTENT
+========================= */
+.step-content {
+    display: none;
+}
+
+.step-content.active {
+    display: block;
+    animation: fadeSlide 0.35s ease;
+}
+
+@keyframes fadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================
+   INPUT / SELECT
+========================= */
+.form-control,
+.form-select {
+    border-radius: 12px;
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    transition: 0.25s;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #7b61ff;
+    box-shadow: 0 0 0 0.15rem rgba(123,97,255,.25);
+}
+
+/* =========================
+   KHUNG TỔNG TIỀN
+========================= */
+.total-price-box {
+    background: #f8f9fa;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.total-price-box h2 {
+    font-size: 28px;
+    margin: 0;
+}
+
+/* =========================
+   NÚT ĐẶT PHÒNG GRADIENT
+========================= */
+.btn-success {
+    background: linear-gradient(90deg, #7b2ff7, #f107a3);
+    border: none;
+    padding: 14px 36px;
+    font-size: 16px;
+    border-radius: 14px;
+    font-weight: bold;
+    color: #fff;
+    transition: 0.3s;
+}
+
+.btn-success:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* =========================
+   BUTTON THƯỜNG
+========================= */
+.btn-primary {
+    border-radius: 12px;
+    padding: 12px 30px;
+    font-weight: 600;
+}
+
+.btn-secondary {
+    border-radius: 12px;
+}
+
+/* =========================
+   RESPONSIVE MOBILE
+========================= */
+@media (max-width: 768px) {
+    .step-indicator {
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .total-price-box {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+}

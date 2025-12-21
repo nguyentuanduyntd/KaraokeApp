@@ -1,0 +1,81 @@
+{% extends "layout/base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    <h3 class="mb-3 text-primary">Thanh toán phòng</h3>
+
+    <table class="table table-bordered text-center align-middle">
+        <thead class="table-dark">
+        <tr>
+            <th>Phòng</th>
+            <th>Khách</th>
+            <th>Ngày</th>
+            <th>Giờ</th>
+            <th>Point</th>
+            <th>Tổng tiền</th>
+            <th>Thao tác</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for c in coupons %}
+        {% set receipt = c.receipt %}
+        {% set user = c.user %}
+        <tr>
+            <td>{{ c.room.name }}</td>
+            <td>{{ receipt.name }}</td>
+            <td>{{ c.booking_date }}</td>
+            <td>{{ c.check_in_time }} - {{ c.check_out_time }}</td>
+
+            {# POINT #}
+            <td>
+                {% if user and user.role.name == "GUEST" %}
+                    <span class="badge bg-info">{{ user.point }} point</span>
+                    {% if user.point >= 10 %}
+                        <br><small class="text-success fst-italic">(-5% bill)</small>
+                    {% endif %}
+                {% else %}
+                <span class="text-muted">---</span>
+                {% endif %}
+            </td>
+
+            <td>
+                <strong class="text-danger">
+                    {{ "{:,.0f}".format(receipt.total) }} đ
+                </strong>
+                <div style="font-size: 0.8em;" class="text-muted text-start mt-1">
+                    <div>Phòng: {{ "{:,.0f}".format(receipt.total_room) }}</div>
+                    <div>DV: {{ "{:,.0f}".format(receipt.total_service) }}</div>
+                    <div>VAT (10%): {{ "{:,.0f}".format(receipt.vat) }}</div>
+                    {% if receipt.discount > 0 %}
+                    <div class="text-success">Giảm: -{{ "{:,.0f}".format(receipt.discount) }}</div>
+                    {% endif %}
+                </div>
+            </td>
+
+            <td>
+                <form action="{{ url_for('staff_confirm_payment', coupon_id=c.id) }}"
+                      method="post"
+                      onsubmit="return confirm('Xác nhận thanh toán phòng này?')">
+                    <select class="form-select form-select-sm mb-2" name="payment_method" required>
+                        <option value="CASH">Tiền mặt</option>
+                        <option value="MOMO">MoMo</option>
+                    </select>
+                    <button class="btn btn-success btn-sm w-100">
+                        Thanh toán
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td class="text-muted" colspan="7">
+                Không có phòng cần thanh toán
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

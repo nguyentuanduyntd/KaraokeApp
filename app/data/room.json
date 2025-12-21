@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Karaoke phong cách Japan",
+    "capacity": 15,
+    "status": 1,
+    "image": "/static/images/p1.jpg",
+    "typeid": 1
+  },
+  {
+    "name": "Karaoke phong cách VietNam",
+    "capacity": 15,
+    "status": 1,
+    "image": "/static/images/p2.jpg",
+    "typeid": 1
+  },
+  {
+    "name": "Karaoke phong cách ThaiLand",
+    "capacity": 15,
+    "status": 0,
+    "image": "/static/images/p3.jpg",
+    "typeid": 2
+  },
+  {
+    "name": "Karaoke phong cách Korea",
+    "capacity": 15,
+    "status": 0,
+    "image": "/static/images/p4.jpg",
+    "typeid": 2
+  },
+  {
+    "name": "Karaoke phong cách America",
+    "capacity": 15,
+    "status": 1,
+    "image": "/static/images/p5.png",
+    "typeid": 1
+  }
+]

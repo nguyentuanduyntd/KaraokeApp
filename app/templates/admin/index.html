@@ -1,0 +1,214 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+<div class="container">
+
+    <!-- TIÊU ĐỀ -->
+    <h1 class="text-info text-center mt-3">
+        CHÀO MỪNG ĐẾN VỚI TRANG QUẢN TRỊ
+    </h1>
+
+    {% if current_user.is_authenticated %}
+
+    <h2 class="text-success text-end">
+        Chào {{ current_user.name }}!
+    </h2>
+
+    <!-- QUAY LẠI TRANG CHỦ -->
+    {% if current_user.role.name in ['GUEST', 'STAFF'] %}
+    <h3 class="mt-3">
+        &laquo; Quay lại
+        <a class="text-danger" href="/">Trang chủ</a>
+        để đặt phòng
+    </h3>
+    {% endif %}
+
+    <!-- KHU VỰC ADMIN -->
+    {% if current_user.role.name == 'ADMIN' %}
+
+    <hr>
+
+    <h3 class="text-center mt-4">BÁO CÁO DOANH THU</h3>
+
+    <!-- FORM LỌC -->
+    <form class="row g-3 mt-3" method="post">
+        <div class="col-md-3">
+            <label class="form-label">Ngày bắt đầu</label>
+            <input class="form-control" name="start_date"
+                   required type="date" value="{{ start_date }}">
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Ngày kết thúc</label>
+            <input class="form-control" name="end_date"
+                   required type="date" value="{{ end_date }}">
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Chế độ xem</label>
+            <select class="form-control" name="report_type">
+                <option value="day" {% if report_type == 'day' %}selected{% endif %}>Ngày</option>
+                <option value="week" {% if report_type == 'week' %}selected{% endif %}>Tuần</option>
+                <option value="trend" {% if report_type == 'trend' %}selected{% endif %}>Xu hướng</option>
+            </select>
+
+        </div>
+
+        <div class="col-md-3 d-flex align-items-end">
+            <button class="btn btn-success w-100">
+                Xem báo cáo
+            </button>
+        </div>
+    </form>
+
+    <!-- BÁO CÁO THEO NGÀY -->
+    {% if report_type == 'day' and day_report %}
+    <h4 class="mt-4">Doanh thu theo ngày & phòng</h4>
+
+    <table class="table table-bordered text-center">
+        <thead class="table-dark">
+        <tr>
+            <th>Ngày</th>
+            <th>Phòng</th>
+            <th>Doanh thu</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for r in day_report %}
+        <tr>
+            <td>{{ r.date.strftime('%d/%m/%Y') }}</td>
+            <td>{{ r.room_name }}</td>
+            <td>{{ "{:,.0f}".format(r.revenue) }} đ</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    <!-- BÁO CÁO THEO TUẦN -->
+    {% if report_type == 'week' and week_report %}
+    <h4 class="mt-4">Doanh thu theo tuần</h4>
+
+    <table class="table table-striped text-center">
+        <thead class="table-dark">
+        <tr>
+            <th>Phòng</th>
+            <th>Tuần</th>
+            <th>Doanh thu</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for r in week_report %}
+        <tr>
+            <td>{{ r.room_name }}</td>
+            <td>{{ r.week }}</td>
+            <td>{{ "{:,.0f}".format(r.revenue) }} đ</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    <!-- XU HƯỚNG KHÁCH -->
+    {% if report_type == 'trend' and trend_data %}
+    <h4 class="mt-5 text-center">
+        Xu hướng khách chọn phòng
+    </h4>
+
+    <div class="row mt-4">
+
+        <!-- BẢNG -->
+        <div class="col-md-6">
+            <table class="table table-bordered table-striped text-center shadow-sm">
+                <thead class="table-dark">
+                <tr>
+                    <th>Phòng</th>
+                    <th>Số lượt</th>
+                    <th>Tỉ lệ (%)</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% set total = trend_data | sum(attribute='total') %}
+                {% for r in trend_data %}
+                <tr>
+                    <td>{{ r.room_name }}</td>
+                    <td>{{ r.total }}</td>
+                    <td>
+                        {{ "%.1f"|format(r.total / total * 100) }}%
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- BIỂU ĐỒ -->
+        <div class="col-md-6 text-center">
+            <canvas id="trendChart" style="max-width: 80%;"></canvas>
+        </div>
+    </div>
+    {% endif %}
+
+    {% endif %}
+
+    {% else %}
+
+    <!-- FORM ĐĂNG NHẬP -->
+    {% if err_msg %}
+    <div class="alert alert-danger">{{ err_msg }}</div>
+    {% endif %}
+
+    <form action="/admin-login" class="mt-4" method="post">
+        <div class="mb-3">
+            <label class="form-label">Tài khoản</label>
+            <input class="form-control" name="username"
+                   required type="text">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Mật khẩu</label>
+            <input class="form-control" name="password"
+                   required type="password">
+        </div>
+
+        <button class="btn btn-primary">
+            ĐĂNG NHẬP
+        </button>
+    </form>
+
+    {% endif %}
+</div>
+
+<!-- CHART -->
+{% if report_type == 'trend' and trend_data %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const labels = [
+        {% for r in trend_data %}
+            "{{ r.room_name }}",
+        {% endfor %}
+    ];
+
+    const data = [
+        {% for r in trend_data %}
+            {{ r.total }},
+        {% endfor %}
+    ];
+
+    new Chart(document.getElementById('trendChart'), {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: [
+                    '#FF6384', '#36A2EB', '#FFCE56',
+                    '#8AFF33', '#FF8A33', '#33FFF0'
+                ]
+            }]
+        }
+    });
+</script>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow">
+                <img alt="{{ room.name }}" class="card-img-top" src="{{ room.image }}">
+                <div class="card-body">
+                    <h3 class="card-title text-danger">{{ room.name }}</h3>
+                    <p><strong>Loại phòng:</strong> {{ room.type.name }}</p>
+                    <p><strong>Giá:</strong> {{ "{:,.0f}".format(room.type.price) }} VNĐ/giờ</p>
+                    <p><strong>Sức chứa:</strong> {{ room.capacity }} người</p>
+                    <hr>
+                    <a class="btn btn-secondary w-100" href="{{ url_for('room_list_check') }}">
+                        <i class="fa fa-arrow-left"></i> Quay lại chọn phòng
+                    </a>
+
+                    {% if current_user.is_authenticated %}
+                    <a class="btn btn-success w-100 mt-2" href="{{ url_for('booking_page', room_id=room.id) }}">
+                        Đặt phòng này ngay
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <h4 class="text-primary">Các khung giờ đã có người đặt</h4>
+            <p class="text-muted fst-italic">Vui lòng tránh đặt trùng vào các khoảng thời gian dưới đây:</p>
+
+            {% if coupons %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center align-middle">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Ngày</th>
+                        <th>Bắt đầu</th>
+                        <th>Kết thúc</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for c in coupons %}
+                    <tr class="table-danger">
+                        <td class="fw-bold">{{ c.booking_date.strftime('%d/%m/%Y') }}</td>
+                        <td class="fw-bold text-danger">{{ c.check_in_time.strftime('%H:%M') }}</td>
+                        <td class="fw-bold text-danger">{{ c.check_out_time.strftime('%H:%M') }}</td>
+                        <td>
+                            {% if c.status.name == 'BOOKED' %}
+                            <span class="badge bg-warning text-dark">Đã đặt trước</span>
+                            {% elif c.status.name == 'USING' %}
+                            <span class="badge bg-primary">Đang hát</span>
+                            {% elif c.status.name == 'PAID' %}
+                            <span class="badge bg-success">Đã xong (Chưa dọn)</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-success text-center p-5">
+                <h4><i class="fa fa-check-circle"></i> Phòng này hiện đang trống lịch!</h4>
+                <p>Bạn có thể đặt bất cứ giờ nào.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
